@@ -74,7 +74,7 @@
 
 <div class="form-container">
     <h2 class="form-title">Student Registration</h2>
-
+        {{msg}}
     <form action="{% url 'registerdata' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
@@ -102,6 +102,23 @@
             <label class="form-label">Upload Image</label>
             <input type="file" name="Image" class="form-control" required>
         </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" name="Password" class="form-control" placeholder="Enter password" required>
+        </div>
+
+        <!-- CONFIRM PASSWORD FIELD -->
+        <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" name="ConfirmPassword" class="form-control" placeholder="Re-enter password" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Upload Image</label>
+            <input type="file" name="Image" class="form-control" required>
+        </div>
+
 
         <button type="submit" class="btn btn-custom w-100">Register</button>
     </form>
