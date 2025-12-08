@@ -13,25 +13,31 @@ def registerdata(request):
         e = request.POST.get('Email')
         c = request.POST.get('Contact')
         d = request.POST.get('Detail')
-        p = request.POST['Password']
-        cp = request.POST['ConfirmPassword']
+        p = request.POST.get('Password')
+        cp = request.POST.get('ConfirmPassword')
         i = request.FILES.get('Image')
-        print(n,e,c,d,p,cp,i)
-        user=Student.objects.filter(Email=e)
-        
-        if user:
-            msg = "already exist"
-            return render(request,'register.html',{'msg':msg})
-        else:
-            if p==cp:
-                Student.objects.create(Name=e,Email=e,Contact=c,Detail=d,Password=p,ConfirmPassword=cp,Image=i,)
-                msg = "Registration Done"
-                return render(request,'login.html',{'msg':msg})
-            else:
-                msg='p&cp not matched'
-                return render(request,'register.html',{'msg':msg})
-        # print(n, e, c, d, i)
 
-        # return HttpResponse("OK")
+        # basic check
+        if p != cp:
+            msg = "Password and Confirm Password do not match"
+            return render(request, 'register.html', {'msg': msg})
+
+        # check existing user
+        if Student.objects.filter(Email=e).exists():
+            msg = "Email already exists"
+            return render(request, 'register.html', {'msg': msg})
+
+        # create WITHOUT ConfirmPassword (and correct Name mapping)
+        Student.objects.create(
+            Name=n,
+            Email=e,
+            Contact=c,
+            Detail=d,
+            Image=i,
+            Password=p
+        )
+
+        msg = "Registration Done"
+        return render(request, 'login.html', {'msg': msg})
 
     return render(request, 'register.html')
