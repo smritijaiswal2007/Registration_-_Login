@@ -41,3 +41,33 @@ def registerdata(request):
         return render(request, 'login.html', {'msg': msg})
 
     return render(request, 'register.html')
+def login(request):
+    return render(request,'login.html')
+
+def logindata(request):
+    if request.method=='POST':
+        e=request.POST.get('email')
+        p=request.POST.get('pass')
+        print(e,p)
+        user = Student.objects.filter(Email=e)
+        if user:
+            userdata = Student.objects.get(Email=e)
+            un = userdata.Name
+            ue=userdata.Email
+            uc=userdata.Contact
+            ud=userdata.Detail
+            ui=userdata.Image
+            up=userdata.Password
+            if up==p:
+                data={'name':un,'email':ue,'contact':uc,'detail':ud,'image':ui,'password':up}
+                return render(request,'dashboard.html',{'data':data})
+            else:
+                msg="Email&Password not matched"
+                return render(request,'login.html',{'msg':msg})
+            
+        else:
+            msg="Email not register"
+            return render(request,'register.html',{'msg':msg})
+        # print(request.POST)
+
+
